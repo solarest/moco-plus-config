@@ -1,10 +1,10 @@
 package com.solarest.mocoplus.config.entity.dto;
 
 import com.alibaba.fastjson.JSONObject;
-import com.solarest.mocoplus.config.entity.moco.Headers;
-import com.solarest.mocoplus.config.entity.moco.Queries;
-import com.solarest.mocoplus.config.entity.moco.Response;
-import com.solarest.mocoplus.config.entity.moco.Xpath;
+import com.solarest.mocoplus.config.entity.dto.moco.Headers;
+import com.solarest.mocoplus.config.entity.dto.moco.Queries;
+import com.solarest.mocoplus.config.entity.dto.moco.Response;
+import com.solarest.mocoplus.config.entity.dto.moco.Xpath;
 import com.solarest.mocoplus.config.entity.po.MocoRequestConfig;
 import com.solarest.mocoplus.config.enumeration.HttpMethod;
 import lombok.Data;

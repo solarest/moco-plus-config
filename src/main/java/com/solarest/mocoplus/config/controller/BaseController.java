@@ -16,7 +16,7 @@ public class BaseController {
     private static final String RESULT = "result";
     private static final String SUCCESS_CODE = "00";
     private static final String FAILED_CODE = "03";
-    private static final String SUCCESS_MSG = "操作成功";
+    private static final String SUCCESS_MSG = "success";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

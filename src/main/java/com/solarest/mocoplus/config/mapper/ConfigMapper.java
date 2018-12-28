@@ -28,7 +28,7 @@ public interface ConfigMapper {
      * insert config
      *
      * @param config config
-     * @return 条数
+     * @return effected count
      */
     @Insert("INSERT OR IGNORE INTO moco_request_config(" +
             " uri, method, headers, xpath, queries, response, hash " +

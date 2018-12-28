@@ -1,4 +1,4 @@
-package com.solarest.mocoplus.config.entity.moco;
+package com.solarest.mocoplus.config.entity.dto.moco;
 
 
 import com.alibaba.fastjson.JSON;
@@ -77,7 +77,7 @@ public class Response {
     }
 
     /**
-     * json\text format convertor
+     * json\text format converter
      *
      * @param oriResponse original response entity input
      * @return converted response entity

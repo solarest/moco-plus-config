@@ -8,6 +8,7 @@ import com.solarest.mocoplus.config.mapper.ConfigMapper;
 import com.solarest.mocoplus.config.service.MocoConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,6 +27,7 @@ public class MocoConfigServiceImpl implements MocoConfigService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer importConfig(JSONArray array) {
         AtomicInteger effectedCount = new AtomicInteger();
 

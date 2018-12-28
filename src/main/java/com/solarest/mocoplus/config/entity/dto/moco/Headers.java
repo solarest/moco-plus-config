@@ -1,4 +1,4 @@
-package com.solarest.mocoplus.config.entity.moco;
+package com.solarest.mocoplus.config.entity.dto.moco;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;

@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.Objects;
@@ -35,5 +36,10 @@ public class DataSourceConfiguration {
         sessionFactory.setDataSource(dataSource);
         Objects.requireNonNull(sessionFactory.getObject()).getConfiguration().setMapUnderscoreToCamelCase(true);
         return sessionFactory.getObject();
+    }
+
+    @Bean(name = "transactionManager")
+    public DataSourceTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
     }
 }
