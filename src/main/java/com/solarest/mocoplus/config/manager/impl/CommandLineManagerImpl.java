@@ -5,9 +5,11 @@ import com.solarest.mocoplus.config.manager.CommandLineManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.*;
 import org.springframework.stereotype.Component;
+import sun.misc.IOUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 /**
  * @author jinjian
@@ -43,7 +45,19 @@ public class CommandLineManagerImpl implements CommandLineManager {
 
     @Override
     public String startMoco(String mocoPath, String configPath, String logPath, int port) throws IOException {
-        return runCommandLine(String.format("java -jar %s http -c %s -p %s", mocoPath, configPath, port));
+        Runtime run = Runtime.getRuntime();
+        Process p = run.exec(String.format("java -jar %s http -c %s -p %s", mocoPath, configPath, port));
+
+        String error = new BufferedReader(new InputStreamReader(p.getErrorStream())).lines().collect(Collectors.joining("\n"));
+        System.err.println(p.exitValue());
+
+        if (error.length() > 0 || !p.isAlive()) {
+            throw new CommandLineException("".equals(error) ? "run failed" : error);
+        }
+
+        ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+        p.getOutputStream().write(arrayOutputStream.toByteArray());
+        return "".equals(arrayOutputStream.toString()) ? "run success" : arrayOutputStream.toString();
     }
 
     public static void main(String[] args) throws IOException {
