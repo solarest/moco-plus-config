@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css"
+          rel="stylesheet">
+</head>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/angular.js/1.6.5/angular.min.js"></script>
+<script src="https://cdn.bootcss.com/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="js/format-util.js"></script>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header">
+                <h1>
+                    Moco Configuration
+                </h1>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>description</th>
+                    <th>uri</th>
+                    <th>method</th>
+                    <th>headers</th>
+                    <th>parameters</th>
+                    <th>xpath</th>
+                    <th>response</th>
+                </tr>
+                </thead>
+                <tbody id="moco-config-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    get_moco_config()
+
+    function get_moco_config() {
+        $.ajax({
+            url: '/config/export',
+            type: 'post',
+            success: function (data) {
+                if (data.response_code = '00') {
+                    var result = data.result;
+
+                    var list = $("#moco-config-list");
+                    list.empty();
+                    for (var i in result) {
+                        var config = result[i];
+                        var tr = $(
+                            "<tr>" +
+                            "<th>" + config.id + "</th>" +
+                            "<th>" + getStringContent(config, 'description') + "</th>" +
+                            "<th>" + getStringContent(config.request, 'uri') + "</th>" +
+                            "<th>" + getStringContent(config.request, 'method') + "</th>" +
+                            "<th>" + getJsonContent(config.request, 'headers') + "</th>" +
+                            "<th>" + getJsonContent(config.request, 'queries') + "</th>" +
+                            "<th>" + getJsonContent(config.request, 'xpath') + "</th>" +
+                            "<th>" + getJsonContent(config, 'response') + "</th>" +
+                            "</tr>"
+                        );
+                        list.append(tr)
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</html>
