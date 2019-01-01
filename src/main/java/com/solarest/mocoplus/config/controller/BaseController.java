@@ -1,13 +1,19 @@
 package com.solarest.mocoplus.config.controller;
 
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.solarest.mocoplus.config.exception.CommandLineException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author JinJian
  */
+@Slf4j
 @RestControllerAdvice
 public class BaseController {
 
@@ -18,7 +24,32 @@ public class BaseController {
     private static final String FAILED_CODE = "03";
     private static final String SUCCESS_MSG = "success";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * exception processor
+     *
+     * @param e exception
+     * @return output
+     */
+    @ExceptionHandler()
+    public String exception(Exception e) {
+        JSONObject json = new JSONObject();
+        json.put(CODE, FAILED_CODE);
+        json.put(MSG, e.getMessage());
+
+        String msg = e.getMessage().trim();
+
+        if (e instanceof HttpMessageNotReadableException) {
+            json.put(MSG, "Http format exception: " + msg);
+        } else if (e instanceof JSONException) {
+            json.put(MSG, "JSON format exception: " + msg);
+        } else if (e instanceof CommandLineException) {
+            json.put(MSG, "CMD running exception: " + msg);
+        } else {
+            json.put(MSG, e.getMessage());
+        }
+        log.warn("some thing wrong :", e);
+        return json.toString();
+    }
 
     String responseSuccess() {
         JSONObject json = new JSONObject();

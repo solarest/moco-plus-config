@@ -4,7 +4,7 @@ function getJsonContent(json, key) {
     if (json.hasOwnProperty(key)) {
         return JSON.stringify(json[key])
     } else {
-        return JSON.stringify(JSON.parse('{}'))
+        return ''
     }
 }
 

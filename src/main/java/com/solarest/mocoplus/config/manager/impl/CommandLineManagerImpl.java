@@ -1,11 +1,13 @@
 package com.solarest.mocoplus.config.manager.impl;
 
+import com.solarest.mocoplus.config.exception.CommandLineException;
 import com.solarest.mocoplus.config.manager.CommandLineManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.*;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * @author jinjian
@@ -15,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 public class CommandLineManagerImpl implements CommandLineManager {
 
     @Override
-    public String runCommandLine(String command, String... args) {
+    public String runCommandLine(String command, String... args) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         ByteArrayOutputStream error = new ByteArrayOutputStream();
 
@@ -27,28 +29,24 @@ public class CommandLineManagerImpl implements CommandLineManager {
         exec.setWatchdog(new ExecuteWatchdog(60 * 1000));
         exec.setStreamHandler(new PumpStreamHandler(output, error));
 
-        try {
-            exec.execute(cmdLine);
-            return output.toString();
-        } catch (Exception e) {
-            log.error("some thing wrong with command", e);
-            return error.toString();
+        exec.execute(cmdLine);
+        if (error.size() > 0) {
+            throw new CommandLineException(error.toString("utf8"));
         }
+        return output.toString();
     }
 
     @Override
-    public String showJavaProcess() {
+    public String showJavaProcess() throws IOException {
         return runCommandLine("jps", "-lmvV");
     }
 
     @Override
-    public String startMoco(String mocoPath, String configPath, String logPath, int port) {
-        return runCommandLine("nohup java",
-                String.format("-jar %s http -p %s -c %s > %s 2>&1 &",
-                        mocoPath, configPath, port, logPath));
+    public String startMoco(String mocoPath, String configPath, String logPath, int port) throws IOException {
+        return runCommandLine(String.format("java -jar %s http -c %s -p %s", mocoPath, configPath, port));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         CommandLineManagerImpl manager = new CommandLineManagerImpl();
         System.out.println(manager.showJavaProcess());
     }

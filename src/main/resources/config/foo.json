@@ -1,0 +1,8 @@
+{
+  "request": {
+    "text": "foo"
+  },
+  "response": {
+    "text": "bar"
+  }
+}

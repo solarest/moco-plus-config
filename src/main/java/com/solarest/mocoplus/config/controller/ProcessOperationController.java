@@ -3,10 +3,12 @@ package com.solarest.mocoplus.config.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.solarest.mocoplus.config.manager.CommandLineManager;
+import com.solarest.mocoplus.config.service.impl.MocoOperateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -22,12 +24,15 @@ public class ProcessOperationController extends BaseController {
 
     private final CommandLineManager commandLineManager;
 
+    private final MocoOperateServiceImpl mocoOperateService;
+
     @Autowired
-    public ProcessOperationController(CommandLineManager commandLineManager) {
+    public ProcessOperationController(CommandLineManager commandLineManager, MocoOperateServiceImpl mocoOperateService) {
         this.commandLineManager = commandLineManager;
+        this.mocoOperateService = mocoOperateService;
     }
 
-    @RequestMapping(value = "/show", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/show", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String show() throws IOException {
         String result = commandLineManager.showJavaProcess();
 
@@ -41,6 +46,16 @@ public class ProcessOperationController extends BaseController {
             array.add(process);
         });
         return response(array);
+    }
+
+    @RequestMapping(value = "/launchMoco", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String launchMoco(
+            @RequestParam String mocoPath,
+            @RequestParam String configurationPath,
+            @RequestParam String logPath,
+            @RequestParam Integer port
+    ) throws IOException {
+        return response(mocoOperateService.run(mocoPath, configurationPath, logPath, port));
     }
 
 }
