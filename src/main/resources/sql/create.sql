@@ -1,4 +1,4 @@
-create table moco_request_config
+create table if not exists moco_request_config
 (
   id          INTEGER
     primary key,
@@ -11,6 +11,6 @@ create table moco_request_config
   response    text,
   hash        text
 );
-create unique index moco_request_config_hash_uindex
-  on moco_request_config (hash);
+create unique index if not exists moco_request_config_hash_uindex
+on moco_request_config (hash);
 

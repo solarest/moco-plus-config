@@ -3,4 +3,4 @@ spring:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:config.db
     type: org.sqlite.SQLiteDataSource
-#    schema: classpath:sql/create.sql
+    schema: classpath:sql/create.sql

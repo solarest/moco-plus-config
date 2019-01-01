@@ -35,7 +35,7 @@ public class MocoRequestConfig {
         this.xpath = config.getXpath() == null ? "" : config.getXpath().toString();
         this.queries = config.getQueries() == null ? "" : config.getQueries().toString();
         this.response = config.getResponse().toConfig().toJSONString();
-
+        // hash is used to remove repeated items
         this.hash = DigestUtils.md5Hex(this.uri + this.headers + this.xpath + this.queries + this.method);
         return this;
     }
