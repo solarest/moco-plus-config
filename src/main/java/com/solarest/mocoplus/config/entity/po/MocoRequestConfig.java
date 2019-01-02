@@ -30,6 +30,7 @@ public class MocoRequestConfig {
 
     public MocoRequestConfig buildFromMocoConfig(MocoConfig config) {
         this.uri = config.getUri();
+        this.description = config.getDescription();
         this.method = config.getMethod().name();
         this.headers = config.getHeaders() == null ? "" : config.getHeaders().toString();
         this.xpath = config.getXpath() == null ? "" : config.getXpath().toString();

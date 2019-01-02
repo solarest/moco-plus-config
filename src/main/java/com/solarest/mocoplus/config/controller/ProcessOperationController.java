@@ -40,9 +40,12 @@ public class ProcessOperationController extends BaseController {
         List<String> processes = Arrays.asList(result.split("\n"));
         processes.forEach(x -> {
             JSONObject process = new JSONObject(true);
-            process.put("pid", x.split(" ")[0]);
-            process.put("description", x.split(" ")[1]);
-            process.put("params", x.split(" ", 3)[2]);
+            String[] args = x.split(" ", 3);
+            int length = args.length;
+
+            process.put("pid", length > 0 ? args[0] : "");
+            process.put("description", length > 1 ? args[1] : "");
+            process.put("params", length > 2 ? args[2] : "");
             array.add(process);
         });
         return response(array);
@@ -55,7 +58,8 @@ public class ProcessOperationController extends BaseController {
             @RequestParam String logPath,
             @RequestParam Integer port
     ) throws IOException {
-        return response(mocoOperateService.run(mocoPath, configurationPath, logPath, port));
+        mocoOperateService.run(mocoPath, configurationPath, logPath, port);
+        return responseSuccess();
     }
 
 }

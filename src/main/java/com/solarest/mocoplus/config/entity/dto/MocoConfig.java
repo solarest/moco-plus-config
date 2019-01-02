@@ -21,6 +21,8 @@ public class MocoConfig {
 
     private String uri;
 
+    private String description;
+
     private HttpMethod method;
 
     private Headers headers;
@@ -32,6 +34,8 @@ public class MocoConfig {
     private Response response;
 
     public MocoConfig toBean(JSONObject json) {
+        this.description = json.getString("description");
+
         JSONObject requestJson = json.getJSONObject("request");
 
         this.uri = requestJson.getString("uri");
@@ -59,6 +63,7 @@ public class MocoConfig {
 
     public JSONObject toJson(MocoRequestConfig config) {
         this.uri = config.getUri();
+        this.description = config.getDescription();
         this.method = HttpMethod.valueOf(config.getMethod().toUpperCase());
 
         this.headers = (Headers) new Headers().toBean(config.getHeaders());
@@ -80,6 +85,7 @@ public class MocoConfig {
         JSONObject json = new JSONObject(true);
         json.put("request", requestJson);
         json.put("response", response.toConfig());
+        json.put("description", description == null ? "" : description);
         return json;
     }
 

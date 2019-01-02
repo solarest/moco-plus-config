@@ -87,12 +87,14 @@ public class Response {
 
         if (oriResponse.responseType == ResponseType.JSON) {
             content = content.replace("\"", "\\\"");
+            oriResponse.setResponseType(ResponseType.TEXT);
             oriResponse.setResponse(content);
         }
 
         if (oriResponse.responseType == ResponseType.TEXT) {
             content = content.replace("\\\"", "\"");
             // if not be satisfied to json format should throw exception
+            oriResponse.setResponseType(ResponseType.JSON);
             oriResponse.setResponse(JSONObject.parseObject(content));
         }
         return oriResponse;

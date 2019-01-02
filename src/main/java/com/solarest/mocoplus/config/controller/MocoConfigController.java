@@ -1,14 +1,15 @@
 package com.solarest.mocoplus.config.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.solarest.mocoplus.config.entity.dto.MocoConfig;
+import com.solarest.mocoplus.config.entity.dto.moco.Response;
+import com.solarest.mocoplus.config.entity.po.MocoRequestConfig;
 import com.solarest.mocoplus.config.service.MocoConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author JinJian
@@ -33,5 +34,22 @@ public class MocoConfigController extends BaseController {
     @RequestMapping(value = "/export", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String exportConfig() {
         return response(configService.exportConfig());
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String search(
+            @RequestParam String uri,
+            @RequestParam String description
+    ) {
+        MocoRequestConfig config = new MocoRequestConfig();
+        config.setUri(uri);
+        config.setDescription(description);
+        return response(configService.searchConfig(config));
+    }
+
+    @RequestMapping(value = "/convertFormat", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String convertFormat(@RequestBody String input) {
+        MocoConfig mocoConfig = new MocoConfig().toBean(JSON.parseObject(input));
+        return response(Response.convert(mocoConfig.getResponse()).toConfig());
     }
 }

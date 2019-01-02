@@ -50,13 +50,13 @@
 
 </body>
 <script>
-    get_moco_config()
+    get_moco_config();
 
     function get_moco_config() {
         $.ajax({
             url: '/config/export',
             type: 'post',
-            success: function (data) {
+            function(data) {
                 if (data.response_code = '00') {
                     var result = data.result;
 

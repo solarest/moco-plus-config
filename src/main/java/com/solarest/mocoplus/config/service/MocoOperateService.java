@@ -2,10 +2,13 @@ package com.solarest.mocoplus.config.service;
 
 import java.io.IOException;
 
+/**
+ * @author JinJian
+ */
 public interface MocoOperateService {
 
-    String run(String mocoPath, String configurationPath, String logPath, int port) throws IOException;
+    void run(String mocoPath, String configurationPath, String logPath, int port) throws IOException;
 
-    String run(String configurationPath, String logPath, int port) throws IOException;
+    void run(String configurationPath, String logPath, int port) throws IOException;
 
 }

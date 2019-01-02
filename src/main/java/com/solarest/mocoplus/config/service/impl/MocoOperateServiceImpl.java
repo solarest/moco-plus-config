@@ -21,13 +21,13 @@ public class MocoOperateServiceImpl implements MocoOperateService {
     }
 
     @Override
-    public String run(String mocoPath, String configurationPath, String logPath, int port) throws IOException {
-        return commandLineManager.startMoco(mocoPath, configurationPath, logPath, port);
+    public void run(String mocoPath, String configurationPath, String logPath, int port) throws IOException {
+        commandLineManager.startMoco(mocoPath, configurationPath, logPath, port);
     }
 
     @Override
-    public String run(String configurationPath, String logPath, int port) throws IOException {
-        return commandLineManager.startMoco(
+    public void run(String configurationPath, String logPath, int port) throws IOException {
+        commandLineManager.startMoco(
                 "classpath:lib/moco-runner-0.12.0-standalone.jar",
                 configurationPath, logPath, port
         );

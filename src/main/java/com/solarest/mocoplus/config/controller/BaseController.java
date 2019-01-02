@@ -3,9 +3,8 @@ package com.solarest.mocoplus.config.controller;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.solarest.mocoplus.config.exception.CommandLineException;
+import com.solarest.mocoplus.config.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -44,6 +43,8 @@ public class BaseController {
             json.put(MSG, "JSON format exception: " + msg);
         } else if (e instanceof CommandLineException) {
             json.put(MSG, "CMD running exception: " + msg);
+        } else if (e instanceof SystemException) {
+            json.put(MSG, "System running exception: " + msg);
         } else {
             json.put(MSG, e.getMessage());
         }

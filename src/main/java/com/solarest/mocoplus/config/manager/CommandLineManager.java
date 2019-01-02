@@ -33,7 +33,7 @@ public interface CommandLineManager {
      * @param configPath configuration path
      * @param logPath    moco server logs path
      * @param port       server port
-     * @return launcher result
+     * @throws IOException IOException
      */
-    String startMoco(String mocoPath, String configPath, String logPath, int port) throws IOException;
+    void startMoco(String mocoPath, String configPath, String logPath, int port) throws IOException;
 }
