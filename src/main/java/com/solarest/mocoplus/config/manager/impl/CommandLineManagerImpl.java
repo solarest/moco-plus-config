@@ -43,7 +43,13 @@ public class CommandLineManagerImpl implements CommandLineManager {
 
     @Override
     public void startMoco(String mocoPath, String configPath, String logPath, int port) throws IOException {
-        Runtime run = Runtime.getRuntime();
-        run.exec(String.format("nohup java -jar %s http -c %s -p %s > %s/moco-logs.out 2>&1 &", mocoPath, configPath, logPath, port));
+        String result = runCommandLine("nohup java",
+                String.format("-jar %s http -c %s -p %s > %s/moco-logs.out 2>&1 &",
+                        mocoPath,
+                        configPath,
+                        logPath,
+                        port)
+        );
+        System.err.println(result);
     }
 }

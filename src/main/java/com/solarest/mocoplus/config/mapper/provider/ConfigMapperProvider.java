@@ -15,11 +15,11 @@ public class ConfigMapperProvider {
             FROM("moco_request_config");
 
             if (!config.getDescription().isEmpty()) {
-                WHERE("description like %${config.description}%");
+                WHERE("description like '%${config.description}%'");
             }
 
             if (config.getUri().isEmpty()) {
-                WHERE("uri like %${config.uri}%");
+                WHERE("uri like '%${config.uri}%'");
             }
         }};
         return sql.toString();

@@ -2,9 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>editor</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css"
+          rel="stylesheet">
 </head>
+
+<!-- jQuery -->
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script type="text/javascript" src="/static/js/jquery.js"></script>-->
+
+<!-- Bootstrap -->
+<link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/angular.js/1.6.5/angular.min.js"></script>
+<script src="https://cdn.bootcss.com/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="js/format-util.js"></script>
 <body>
 
+<div class="container">
+    <div class="page-header">
+        <h1>
+            Moco Config Editor
+        </h1>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="col-md-6 column">
+                        <form class="form-horizontal">
+                            <label class="">uri</label><input class="form-control" type="text"/>
+                            <label>method</label><input class="form-control" type="text"/>
+                            <label>headers</label><input class="form-control" type="text"/>
+                            <label>parameters</label><input class="form-control" type="text"/>
+                            <label>xpath</label><input class="form-control" type="text"/>
+                        </form>
+                    </div>
+
+
+                    <div class="col-md-6 column">
+                        <label>response</label>
+                        <textarea class="form-control" rows=15>
+					</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
