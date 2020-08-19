@@ -75,7 +75,7 @@ public class Response extends BaseElement {
             try {
                 JSONObject.parse(String.valueOf(response));
             } catch (Exception e) {
-                throw new SystemException(ErrorEnum.DATA_FORMAT_ERROR);
+                throw new SystemException(ErrorEnum.DATA_FORMAT_EXCEPTION);
             }
         }
 

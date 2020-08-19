@@ -1,13 +1,19 @@
 package com.solarest.mocoplus.config.common.exception;
 
-import lombok.Data;
-
 /**
  * @author solar
  */
 public enum ErrorEnum {
 
-    DATA_FORMAT_ERROR("400001", "data format error");
+    /**
+     * data format error
+     */
+    DATA_FORMAT_EXCEPTION("400001", "data format exception"),
+
+    /**
+     * unknown exception
+     */
+    SYSTEM_EXCEPTION("400999", "unknown exception");
 
     private String code;
 

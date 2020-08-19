@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:config.db
-    type: org.sqlite.SQLiteDataSource
-    schema: classpath:sql/create.sql
+    hikari:
+      jdbc-url: jdbc:sqlite:config.db
+      driver-class-name: org.sqlite.JDBC
+      schema: classpath:sql/create.sql

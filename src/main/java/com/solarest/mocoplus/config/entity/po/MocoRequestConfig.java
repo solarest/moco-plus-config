@@ -1,8 +1,8 @@
 package com.solarest.mocoplus.config.entity.po;
 
 import com.solarest.mocoplus.config.entity.dto.MocoConfig;
+import com.solarest.mocoplus.config.enumeration.HttpMethod;
 import lombok.Data;
-import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * @author JinJian
@@ -10,11 +10,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 @Data
 public class MocoRequestConfig {
 
-    private Integer id;
-
     private String uri;
 
-    private String method;
+    private HttpMethod method;
 
     private String headers;
 
@@ -31,14 +29,11 @@ public class MocoRequestConfig {
     public MocoRequestConfig buildFromMocoConfig(MocoConfig config) {
         this.uri = config.getUri();
         this.description = config.getDescription();
-        this.method = config.getMethod().name();
+        this.method = config.getMethod();
         this.headers = config.getHeaders() == null ? "" : config.getHeaders().toString();
         this.xpath = config.getXpath() == null ? "" : config.getXpath().toString();
         this.queries = config.getQueries() == null ? "" : config.getQueries().toString();
         this.response = config.getResponse().toConfig().toJSONString();
-        // hash is used to remove repeated items
-        this.hash = DigestUtils.md5Hex(this.uri + this.headers + this.xpath + this.queries + this.method);
         return this;
     }
-
 }

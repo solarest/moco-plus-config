@@ -8,6 +8,7 @@ import com.solarest.mocoplus.config.entity.dto.moco.Xpath;
 import com.solarest.mocoplus.config.entity.po.MocoRequestConfig;
 import com.solarest.mocoplus.config.enumeration.HttpMethod;
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * @author JinJian
@@ -19,19 +20,23 @@ public class MocoConfig {
     public static final String QUERIES_KEY = "queries";
     public static final String XPATH_KEY = "xpath";
 
+    @NonNull
     private String uri;
 
-    private String description;
-
+    @NonNull
     private HttpMethod method;
 
     private Headers headers;
 
     private Xpath xpath;
 
+    @NonNull
     private Queries queries;
 
+    @NonNull
     private Response response;
+
+    private String description;
 
     public MocoConfig toBean(JSONObject json) {
         this.description = json.getString("description");
@@ -64,7 +69,7 @@ public class MocoConfig {
     public JSONObject toJson(MocoRequestConfig config) {
         this.uri = config.getUri();
         this.description = config.getDescription();
-        this.method = HttpMethod.valueOf(config.getMethod().toUpperCase());
+        this.method = config.getMethod();
 
         this.headers = (Headers) new Headers().toBean(config.getHeaders());
         this.xpath = (Xpath) new Xpath().toBean(config.getXpath());
@@ -88,5 +93,4 @@ public class MocoConfig {
         json.put("description", description == null ? "" : description);
         return json;
     }
-
 }
