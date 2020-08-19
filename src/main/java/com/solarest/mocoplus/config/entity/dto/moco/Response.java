@@ -3,15 +3,25 @@ package com.solarest.mocoplus.config.entity.dto.moco;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.solarest.mocoplus.config.common.exception.ErrorEnum;
+import com.solarest.mocoplus.config.common.exception.SystemException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author jinjian
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Response {
+public class Response extends BaseElement {
 
-    enum ResponseType {
+    public static final String STATUS_KEY = "status";
+
+    public static final String RESPONSE_JSON_KEY = "json";
+
+    public static final String RESPONSE_TEXT_KEY = "text";
+
+    enum ResponseFormatType {
 
         /**
          * text type
@@ -24,54 +34,54 @@ public class Response {
         JSON
     }
 
-    private ResponseType responseType;
+    private ResponseFormatType responseFormatType;
+
+    private String responseStatus = "200";
 
     private Object response;
 
-    public Response() {
-    }
-
-    public Response(ResponseType responseType, String response) {
-        this.responseType = responseType;
-        this.response = response;
-        check();
-    }
-
-    private void check() {
-        if (this.responseType == ResponseType.JSON) {
-            JSONObject.parse(String.valueOf(response));
-        }
-    }
-
+    @Override
     public JSONObject toConfig() {
-
         JSONObject json = new JSONObject();
-        if (responseType == ResponseType.JSON) {
-            json.put("json", JSONObject.parse(String.valueOf(response)));
+        if (responseStatus != null && !responseStatus.isEmpty()) {
+            json.put(STATUS_KEY, responseStatus);
         }
 
-        if (responseType == ResponseType.TEXT) {
-            json.put("text", response.toString());
+        if (responseFormatType == ResponseFormatType.JSON) {
+            json.put(RESPONSE_JSON_KEY, JSONObject.parse(String.valueOf(response)));
+        }
+
+        if (responseFormatType == ResponseFormatType.TEXT) {
+            json.put(RESPONSE_TEXT_KEY, response.toString());
         }
         return json;
     }
 
     public Response toBean(String text) {
         JSONObject json = JSON.parseObject(text);
-        return this.toBean(json);
+        Response response = this.toBean(json);
+        return response;
     }
 
     public Response toBean(JSONObject json) {
         Response response = new Response();
-
-        if (json.containsKey(ResponseType.JSON.name().toLowerCase())) {
-            response.setResponseType(ResponseType.JSON);
-            response.setResponse(json.get(ResponseType.JSON.name().toLowerCase()));
+        if (json.containsKey(STATUS_KEY)) {
+            response.setResponseStatus(json.getString(STATUS_KEY));
         }
 
-        if (json.containsKey(ResponseType.TEXT.name().toLowerCase())) {
-            response.setResponseType(ResponseType.TEXT);
-            response.setResponse(json.get(ResponseType.TEXT.name().toLowerCase()));
+        if (json.containsKey(RESPONSE_JSON_KEY)) {
+            response.setResponseFormatType(ResponseFormatType.JSON);
+            response.setResponse(json.get(RESPONSE_JSON_KEY));
+            try {
+                JSONObject.parse(String.valueOf(response));
+            } catch (Exception e) {
+                throw new SystemException(ErrorEnum.DATA_FORMAT_ERROR);
+            }
+        }
+
+        if (json.containsKey(RESPONSE_TEXT_KEY)) {
+            response.setResponseFormatType(ResponseFormatType.TEXT);
+            response.setResponse(json.get(RESPONSE_TEXT_KEY));
         }
         return response;
     }
@@ -85,16 +95,16 @@ public class Response {
     public static Response convert(Response oriResponse) {
         String content = (String) oriResponse.getResponse();
 
-        if (oriResponse.responseType == ResponseType.JSON) {
+        if (oriResponse.responseFormatType == ResponseFormatType.JSON) {
             content = content.replace("\"", "\\\"");
-            oriResponse.setResponseType(ResponseType.TEXT);
+            oriResponse.setResponseFormatType(ResponseFormatType.TEXT);
             oriResponse.setResponse(content);
         }
 
-        if (oriResponse.responseType == ResponseType.TEXT) {
+        if (oriResponse.responseFormatType == ResponseFormatType.TEXT) {
             content = content.replace("\\\"", "\"");
             // if not be satisfied to json format should throw exception
-            oriResponse.setResponseType(ResponseType.JSON);
+            oriResponse.setResponseFormatType(ResponseFormatType.JSON);
             oriResponse.setResponse(JSONObject.parseObject(content));
         }
         return oriResponse;

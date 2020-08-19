@@ -42,17 +42,17 @@ public class MocoConfig {
         this.method = HttpMethod.valueOf(requestJson.getString("method").toUpperCase());
 
         if (requestJson.containsKey(HEADER_KEY)) {
-            headers = new Headers();
+            this.headers = new Headers();
             requestJson.getJSONObject(HEADER_KEY).forEach((k, v) -> this.headers.put(k, (String) v));
         }
 
         if (requestJson.containsKey(QUERIES_KEY)) {
-            queries = new Queries();
+            this.queries = new Queries();
             requestJson.getJSONObject(QUERIES_KEY).forEach((k, v) -> this.queries.put(k, (String) v));
         }
 
         if (requestJson.containsKey(XPATH_KEY)) {
-            xpath = new Xpath();
+            this.xpath = new Xpath();
             requestJson.getJSONObject(XPATH_KEY).forEach((k, v) -> this.xpath.put(k, (String) v));
         }
 
